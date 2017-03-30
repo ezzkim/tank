@@ -3,6 +3,7 @@ package com.ericsson.tank;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -14,6 +15,8 @@ public class TankClient extends Frame {
 	private static final int H = 600;
 	private int x = 50;
 	private int y = 50;
+	
+	Image offScreenImage = null;
 	
 	public static void main(String[] args) {
 		TankClient tc = new TankClient();
@@ -46,24 +49,38 @@ public class TankClient extends Frame {
 		g.setColor(c);
 	}
 
-	private class PaintThread implements Runnable {
+	@Override
+	public void update(Graphics g) {  //by double buffer method 
+		if(offScreenImage == null) {
+			offScreenImage = this.createImage(L, H);
+		}
+		Graphics gOffScreen = offScreenImage.getGraphics();
+		
+		// redraw the background
+		Color c = gOffScreen.getColor();
+		gOffScreen.setColor(Color.GREEN);
+		gOffScreen.fillRect(0, 0, L, H);
+		gOffScreen.setColor(c);
 
+		paint(gOffScreen);//user image's graphics to draw on image
+		g.drawImage(offScreenImage, 0, 0, null);
+	}
+	
+	private class PaintThread implements Runnable {
 		@Override
 		public void run() {
 			while(true) {
-				repaint(); // will call paint
+				repaint(); // will call update and then call paint
 				try {
-					Thread.sleep(100);
+					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
 	};
 	
 	private class KeyMonitor extends KeyAdapter {
-
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
@@ -82,12 +99,6 @@ public class TankClient extends Frame {
 				break;
 			}
 		}
-
-		/*@Override
-		public void keyReleased(KeyEvent e) {
-
-		}*/
-		
 	}
 	
 }
