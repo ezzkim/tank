@@ -14,8 +14,9 @@ public class TankClient extends Frame {
 	private static final int L = 800;
 	private static final int H = 600;
 	
-	private Tank myTank = new Tank(50, 50);
-	Image offScreenImage = null;
+	private Tank myTank = new Tank(50, 50, this);
+	public Missle m = null;
+	private Image offScreenImage = null;
 	
 	public static void main(String[] args) {
 		TankClient tc = new TankClient();
@@ -43,6 +44,7 @@ public class TankClient extends Frame {
 	@Override
 	public void paint(Graphics g) {
 		myTank.draw(g);
+		if(m != null) m.draw(g);
 	}
 
 	@Override

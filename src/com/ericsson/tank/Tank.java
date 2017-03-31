@@ -9,6 +9,11 @@ public class Tank {
 	private static final int XSPEED = 5;
 	private static final int YSPEED = 5;
 	
+	public static final int WIDTH = 30;
+	public static final int HEIGHT = 30;
+	
+	private TankClient tc = null;
+	
 	private int x;
 	private int y;
 	
@@ -17,30 +22,57 @@ public class Tank {
 	private boolean bR = false;
 	private boolean bD = false;
 	
-	private enum Direction {
-		L,
-		LU,
-		LD,
-		R,
-		RU,
-		RD,
-		U,
-		D,
+	enum Direction {
+		L,LU,LD,R,
+		RU,RD,U,D,
 		STOP
 	};
 	
 	private Direction dir = Direction.STOP;
+	private Direction ptDir = Direction.D;
 	
 	public Tank(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	public Tank(int x, int y, TankClient tc) {
+		this(x, y);
+		this.tc = tc;
+	}
+	
 	public void draw(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.RED);
-		g.fillOval(x, y, 30, 30);
+		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
+		
+		switch(ptDir) {
+		case L:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x, y + Tank.HEIGHT/2);
+			break;
+		case LU:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x, y);
+			break;
+		case LD:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x, y + Tank.HEIGHT/2);
+			break;
+		case R:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x + Tank.WIDTH, y + Tank.HEIGHT/2);
+			break;
+		case RU:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x + Tank.WIDTH, y);
+			break;
+		case RD:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x + Tank.WIDTH, y + Tank.HEIGHT);
+			break;
+		case U:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x + Tank.WIDTH/2, y);
+			break;
+		case D:
+			g.drawLine(x + Tank.WIDTH/2, y + Tank.HEIGHT/2, x + Tank.WIDTH/2, y + Tank.HEIGHT);
+			break;
+		}
 		
 		move();
 	}
@@ -48,6 +80,9 @@ public class Tank {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		switch(key) {
+		case KeyEvent.VK_CONTROL:
+			tc.m = fire();
+			break;
 		case KeyEvent.VK_LEFT:
 			bL = true;
 			break;
@@ -85,7 +120,7 @@ public class Tank {
 		locateDirection();
 	}
 	
-	void locateDirection() {
+	public void locateDirection() {
 		if(bL && !bU && !bR && !bD) dir = Direction.L;
 		else if(bL && bU && !bR && !bD) dir = Direction.LU;
 		else if(!bL && !bU && bR && !bD) dir = Direction.R;
@@ -95,6 +130,14 @@ public class Tank {
 		else if(!bL && bU && !bR && !bD) dir = Direction.U;
 		else if(!bL && !bU && !bR && bD) dir = Direction.D;
 		else if(!bL && !bU && !bR && !bD) dir = Direction.STOP;
+	}
+	
+	public Missle fire() {
+		int lx = x + Tank.WIDTH/2 - Missle.WIDTH/2;
+		int ly = y + Tank.HEIGHT/2 - Missle.HEIGHT/2;
+		Missle m = new Missle(lx, ly, ptDir);
+		System.out.println("tank fired");
+		return m;
 	}
 	
 	//////////////private//////////////
@@ -129,6 +172,12 @@ public class Tank {
 		case D:
 			y += YSPEED;
 			break;
+		case STOP:
+			break;
+		}
+		
+		if(this.dir != Direction.STOP) {
+			this.ptDir = this.dir;
 		}
 	}
 
