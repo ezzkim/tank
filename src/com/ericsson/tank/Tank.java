@@ -136,7 +136,8 @@ public class Tank {
 	public Missle fire() {
 		int lx = x + Tank.WIDTH/2 - Missle.WIDTH/2;
 		int ly = y + Tank.HEIGHT/2 - Missle.HEIGHT/2;
-		Missle m = new Missle(lx, ly, ptDir);
+		//Missle m = new Missle(lx, ly, ptDir);
+		Missle m = new Missle(lx, ly, ptDir, tc);
 		tc.addMissle(m);
 		System.out.println("tank fired");
 		return m;

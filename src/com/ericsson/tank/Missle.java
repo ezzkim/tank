@@ -16,12 +16,22 @@ public class Missle {
 	private int x;
 	private int y;
 	private Tank.Direction dir;
-	
+	private boolean live = true;
+	private TankClient tc;
+
+	public boolean isLive() {
+		return live;
+	}
+
 	public Missle(int x, int y, Direction dir) {
-		super();
 		this.x = x;
 		this.y = y;
 		this.dir = dir;
+	}
+	
+	public Missle(int x, int y, Direction dir, TankClient tc) {
+		this(x,y,dir);
+		this.tc = tc;
 	}
 	
 	public void draw(Graphics g) {
@@ -65,6 +75,11 @@ public class Missle {
 		case D:
 			y += YSPEED;
 			break;
+		}
+	
+		if(x < 0 || y <0 || x>TankClient.L || y>TankClient.H) {
+			live = false;
+			tc.missles.remove(this);
 		}
 	}
 	

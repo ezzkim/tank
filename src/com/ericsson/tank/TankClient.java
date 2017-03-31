@@ -13,8 +13,8 @@ import java.util.List;
 
 public class TankClient extends Frame {
 
-	private static final int L = 800;
-	private static final int H = 600;
+	public static final int L = 800;
+	public static final int H = 600;
 	
 	private Tank myTank = new Tank(50, 50, this);
 	//public Missle m = null;
@@ -57,6 +57,9 @@ public class TankClient extends Frame {
 		g.drawString("missle count : " + missles.size(), 5, 40);
 		myTank.draw(g);
 		for(Missle m : missles) {
+		/*	if(m.isLive() == false) {
+				missles.remove(m);
+			}*/
 			m.draw(g);
 		}
 	}
