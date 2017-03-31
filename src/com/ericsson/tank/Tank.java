@@ -182,6 +182,11 @@ public class Tank {
 		if(this.dir != Direction.STOP) {
 			this.ptDir = this.dir;
 		}
+		
+		if(x<2) x = 2;
+		if(y<24) y = 24;
+		if(x + Tank.WIDTH + 2> TankClient.L) x = TankClient.L - Tank.WIDTH - 2;
+		if(y + Tank.HEIGHT + 2> TankClient.H) y = TankClient.H - Tank.HEIGHT - 2;
 	}
 
 }
