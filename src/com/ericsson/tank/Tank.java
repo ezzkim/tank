@@ -80,9 +80,6 @@ public class Tank {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		switch(key) {
-		case KeyEvent.VK_CONTROL:
-			tc.m = fire();
-			break;
 		case KeyEvent.VK_LEFT:
 			bL = true;
 			break;
@@ -103,6 +100,10 @@ public class Tank {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		switch(key) {
+		case KeyEvent.VK_CONTROL:
+			//Missle m = fire();
+			fire();
+			break;
 		case KeyEvent.VK_LEFT:
 			bL = false;
 			break;
@@ -136,6 +137,7 @@ public class Tank {
 		int lx = x + Tank.WIDTH/2 - Missle.WIDTH/2;
 		int ly = y + Tank.HEIGHT/2 - Missle.HEIGHT/2;
 		Missle m = new Missle(lx, ly, ptDir);
+		tc.addMissle(m);
 		System.out.println("tank fired");
 		return m;
 	}

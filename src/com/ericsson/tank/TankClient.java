@@ -8,6 +8,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TankClient extends Frame {
 
@@ -15,12 +17,21 @@ public class TankClient extends Frame {
 	private static final int H = 600;
 	
 	private Tank myTank = new Tank(50, 50, this);
-	public Missle m = null;
+	//public Missle m = null;
+	public List<Missle> missles = new LinkedList<Missle>();
 	private Image offScreenImage = null;
 	
 	public static void main(String[] args) {
 		TankClient tc = new TankClient();
 		tc.lunchFrame();
+	}
+	
+	public void addMissle(Missle m) {
+		missles.add(m);
+	}
+	
+	public List<Missle> getMissles() {
+		return missles;
 	}
 	
 	public void lunchFrame() {
@@ -43,8 +54,11 @@ public class TankClient extends Frame {
 	
 	@Override
 	public void paint(Graphics g) {
+		g.drawString("missle count : " + missles.size(), 5, 40);
 		myTank.draw(g);
-		if(m != null) m.draw(g);
+		for(Missle m : missles) {
+			m.draw(g);
+		}
 	}
 
 	@Override
