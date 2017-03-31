@@ -16,8 +16,8 @@ public class TankClient extends Frame {
 	public static final int L = 800;
 	public static final int H = 600;
 	
-	private Tank myTank = new Tank(50, 50, this);
-	//public Missle m = null;
+	private Tank myTank = new Tank(50, 50, true, this);
+	private Tank enemyTank = new Tank(100, 100, false, this);
 	public List<Missle> missles = new LinkedList<Missle>();
 	private Image offScreenImage = null;
 	
@@ -56,6 +56,7 @@ public class TankClient extends Frame {
 	public void paint(Graphics g) {
 		g.drawString("missle count : " + missles.size(), 5, 40);
 		myTank.draw(g);
+		enemyTank.draw(g);
 		for(Missle m : missles) {
 		/*	if(m.isLive() == false) {
 				missles.remove(m);
