@@ -2,6 +2,7 @@ package com.ericsson.tank;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 public class Tank {
@@ -18,7 +19,10 @@ public class Tank {
 	private int y;
 	
 	private boolean good;
+	private boolean live = true;
 	
+	
+
 	private boolean bL = false;
 	private boolean bU = false;
 	private boolean bR = false;
@@ -44,7 +48,17 @@ public class Tank {
 		this.tc = tc;
 	}
 	
+	public void setLive(boolean live) {
+		this.live = live;
+	}
+	
+	public boolean isLive() {
+		return live;
+	}
+	
 	public void draw(Graphics g) {
+		if(!live) return;
+		
 		Color c = g.getColor();
 		if(good) {
 			g.setColor(Color.RED);
@@ -148,6 +162,10 @@ public class Tank {
 		tc.addMissle(m);
 		System.out.println("tank fired");
 		return m;
+	}
+	
+	public Rectangle getRect() {
+		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 	
 	//////////////private//////////////

@@ -61,6 +61,7 @@ public class TankClient extends Frame {
 		/*	if(m.isLive() == false) {
 				missles.remove(m);
 			}*/
+			m.hitTank(enemyTank);
 			m.draw(g);
 		}
 	}

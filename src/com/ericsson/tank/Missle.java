@@ -2,6 +2,7 @@ package com.ericsson.tank;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import com.ericsson.tank.Tank.Direction;
 
@@ -35,12 +36,31 @@ public class Missle {
 	}
 	
 	public void draw(Graphics g) {
+		if(!live) {
+			tc.missles.remove(this);
+			return;
+		}
+		
 		Color c = g.getColor();
 		g.setColor(Color.BLACK);
 		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
 		
 		move();
+	}
+	
+	public Rectangle getRect() {
+		return new Rectangle(x, y, WIDTH, HEIGHT);
+	}
+	
+	public boolean hitTank(Tank t) {
+		if(getRect().intersects(t.getRect()) && t.isLive()) {
+			t.setLive(false);
+			live = false;
+			return true;
+		}
+		
+		return false;
 	}
 	
 	///////////private//////////
