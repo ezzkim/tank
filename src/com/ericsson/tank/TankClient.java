@@ -17,7 +17,10 @@ public class TankClient extends Frame {
 	public static final int L = 800;
 	public static final int H = 600;
 	
-	private Tank myTank = new Tank(50, 50, true, Tank.Direction.STOP, this);
+	Wall w1 = new Wall(300,200,20,150,this);
+	Wall w2 = new Wall(300,100,300,20,this);
+	
+	private Tank myTank = new Tank(100, 50, true, Tank.Direction.STOP, this);
 	//private Tank enemyTank = new Tank(100, 100, false, this);
 	
 	public List<Tank> tanks = new ArrayList<Tank>();
@@ -68,19 +71,31 @@ public class TankClient extends Frame {
 		g.drawString("missle count : " + missles.size(), 5, 40);
 		g.drawString("explodes count : " + explodes.size(), 150, 40);
 		g.drawString("tank count : " + tanks.size(), 295, 40);
-		myTank.draw(g);
-		for(Tank t : tanks) {
-			t.draw(g);
-		}
+		
 		for(Missle m : missles) {
 			m.hitTanks(tanks);
 			m.hitTank(myTank);
+			m.hitWall(w1);
+			m.hitWall(w2);
 			m.draw(g);
 		}
-		//e.draw(g);
+		
 		for(Explode e : explodes) {
 			e.draw(g);
 		}
+		
+		for(Tank t : tanks) {
+			t.hitWall(w1);
+			t.hitWall(w2);
+			t.draw(g);
+		}
+		
+		myTank.draw(g);
+		//myTank.hitWall(w1);
+		//myTank.hitWall(w2);
+		
+		w1.draw(g);
+		w2.draw(g);
 	}
 
 	@Override

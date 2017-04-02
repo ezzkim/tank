@@ -78,6 +78,15 @@ public class Missle {
 		return false;
 	}
 	
+	public boolean hitWall(Wall w) {
+		if(this.live && this.getRect().intersects(w.getRect())) {
+			this.live = false;
+			return true;
+		}
+		
+		return false;
+	}
+	
 	///////////private//////////
 
 	private void move() {

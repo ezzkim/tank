@@ -19,6 +19,9 @@ public class Tank {
 	private int x;
 	private int y;
 	
+	private int oldX;
+	private int oldY;
+	
 	private static Random r = new Random();
 	private int step = r.nextInt(12) + 3;
 	
@@ -42,6 +45,8 @@ public class Tank {
 	public Tank(int x, int y, boolean good, Direction dir) {
 		this.x = x;
 		this.y = y;
+		this.oldX = x;
+		this.oldY = y;
 		this.good = good;
 	}
 	
@@ -182,9 +187,22 @@ public class Tank {
 		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 	
+	public boolean hitWall(Wall w) {
+		if(this.live && this.getRect().intersects(w.getRect())) {
+			//this.dir = Direction.STOP;
+			this.stay();
+			return true;
+		}
+		
+		return false;
+	}
+	
 	//////////////private//////////////
 	
 	private void move() {
+		this.oldX = x;
+		this.oldY = y;
+		
 		switch(dir) {
 		case L:
 			x -= XSPEED;
@@ -239,6 +257,11 @@ public class Tank {
 			
 			if(r.nextInt(40) > 38) this.fire();
 		}
+	}
+	
+	private void stay() {
+		x = oldX;
+		y = oldY;
 	}
 
 }
