@@ -3,6 +3,7 @@ package com.ericsson.tank;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.List;
 
 import com.ericsson.tank.Tank.Direction;
 
@@ -53,11 +54,12 @@ public class Missle {
 		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 	
-	public boolean hitTank(Tank t) {
-		if(getRect().intersects(t.getRect()) && t.isLive()) {
-			t.setLive(false);
-			live = false;
-			return true;
+	
+	public boolean hitTanks(List<Tank> tanks) {
+		for(Tank t : tanks) {
+			if(hitTank(t)) {
+				return true;
+			}
 		}
 		
 		return false;
@@ -65,6 +67,19 @@ public class Missle {
 	
 	///////////private//////////
 
+	private boolean hitTank(Tank t) {
+		if(getRect().intersects(t.getRect()) && t.isLive()) {
+			t.setLive(false);
+			Explode e = new Explode(x,y,tc);
+			tc.explodes.add(e);
+			live = false;
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
 	private void move() {
 		switch(dir) {
 		case L:

@@ -8,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,9 +18,14 @@ public class TankClient extends Frame {
 	public static final int H = 600;
 	
 	private Tank myTank = new Tank(50, 50, true, this);
-	private Tank enemyTank = new Tank(100, 100, false, this);
+	//private Tank enemyTank = new Tank(100, 100, false, this);
+	
+	public List<Tank> tanks = new ArrayList<Tank>();
 	public List<Missle> missles = new LinkedList<Missle>();
+	public List<Explode> explodes = new ArrayList<Explode>();
 	private Image offScreenImage = null;
+	
+	Explode e = new Explode(70, 70, this);
 	
 	public static void main(String[] args) {
 		TankClient tc = new TankClient();
@@ -35,6 +41,11 @@ public class TankClient extends Frame {
 	}
 	
 	public void lunchFrame() {
+		//add 10 enemy tank
+		for(int i=0; i<10; i++) {
+			tanks.add(new Tank(50 + 40*(i+1), 50, false, this));
+		}
+		
 		this.setLocation(200, 100);
 		this.setSize(L, H);
 		this.setTitle("TankWar...");
@@ -55,14 +66,19 @@ public class TankClient extends Frame {
 	@Override
 	public void paint(Graphics g) {
 		g.drawString("missle count : " + missles.size(), 5, 40);
+		g.drawString("explodes count : " + explodes.size(), 150, 40);
+		g.drawString("tank count : " + tanks.size(), 295, 40);
 		myTank.draw(g);
-		enemyTank.draw(g);
+		for(Tank t : tanks) {
+			t.draw(g);
+		}
 		for(Missle m : missles) {
-		/*	if(m.isLive() == false) {
-				missles.remove(m);
-			}*/
-			m.hitTank(enemyTank);
+			m.hitTanks(tanks);
 			m.draw(g);
+		}
+		//e.draw(g);
+		for(Explode e : explodes) {
+			e.draw(g);
 		}
 	}
 
