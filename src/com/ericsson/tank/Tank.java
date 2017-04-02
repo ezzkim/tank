@@ -43,6 +43,16 @@ public class Tank {
 	private Direction dir = Direction.STOP;
 	private Direction ptDir = Direction.D;
 	
+	private int life;
+	
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
 	public Tank(int x, int y, boolean good, Direction dir) {
 		this.x = x;
 		this.y = y;

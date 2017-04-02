@@ -58,7 +58,15 @@ public class Missle {
 	
 	public boolean hitTank(Tank t) {
 		if(this.live && getRect().intersects(t.getRect()) && t.isLive() && this.good != t.isGood()) {
-			t.setLive(false);
+			if(t.isGood()) {
+				t.setLife(t.getLife() - 20);
+				if(t.getLife() <= 0) {
+					t.setLive(false);
+				}
+			} else {
+				t.setLive(false);
+			}
+			
 			Explode e = new Explode(x,y,tc);
 			tc.explodes.add(e);
 			live = false;
