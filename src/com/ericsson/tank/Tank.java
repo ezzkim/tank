@@ -155,6 +155,9 @@ public class Tank {
 		case KeyEvent.VK_DOWN:
 			bD = false;
 			break;
+		case KeyEvent.VK_A:
+			superFire();
+			break;
 		}
 		
 		locateDirection();
@@ -211,6 +214,16 @@ public class Tank {
 		}
 		
 		return false;
+	}
+	
+	public Missle fire(Direction dir) {
+		if(!live) return null;
+		
+		int lx = x + Tank.WIDTH/2 - Missle.WIDTH/2;
+		int ly = y + Tank.HEIGHT/2 - Missle.HEIGHT/2;
+		Missle m = new Missle(lx, ly, good, dir, tc);
+		tc.addMissle(m);
+		return m;
 	}
 	
 	//////////////private//////////////
@@ -278,6 +291,13 @@ public class Tank {
 	private void stay() {
 		x = oldX;
 		y = oldY;
+	}
+	
+	private void superFire() {// send missle to 8 direction
+		Direction[] dirs = Direction.values();
+		for(int i=0; i<dirs.length; i++) {
+			fire(dirs[i]);
+		}
 	}
 
 }

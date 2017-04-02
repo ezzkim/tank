@@ -17,7 +17,7 @@ public class TankClient extends Frame {
 	public static final int L = 800;
 	public static final int H = 600;
 	
-	Wall w1 = new Wall(300,200,20,150,this);
+	Wall w1 = new Wall(200,200,20,150,this);
 	Wall w2 = new Wall(300,100,300,20,this);
 	
 	private Tank myTank = new Tank(100, 50, true, Tank.Direction.STOP, this);
