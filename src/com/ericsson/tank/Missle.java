@@ -78,6 +78,7 @@ public class Missle {
 		return false;
 	}
 	
+	// the missle can move to fast other with the hit prober will false
 	public boolean hitWall(Wall w) {
 		if(this.live && this.getRect().intersects(w.getRect())) {
 			this.live = false;

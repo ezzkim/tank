@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import java.util.Random;
 
 public class Tank {
@@ -179,7 +180,7 @@ public class Tank {
 		//Missle m = new Missle(lx, ly, ptDir);
 		Missle m = new Missle(lx, ly, good, ptDir, tc);
 		tc.addMissle(m);
-		System.out.println("tank fired");
+		//System.out.println("tank fired");
 		return m;
 	}
 	
@@ -192,6 +193,21 @@ public class Tank {
 			//this.dir = Direction.STOP;
 			this.stay();
 			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean cllodesWithTank(List<Tank> tanks) {
+		for(Tank t : tanks) {
+			if(this != t) {
+				if(this.live && t.isLive() && this.getRect().intersects(t.getRect())) {
+					this.stay();
+					t.stay();
+					return true;
+				}
+				
+			}
 		}
 		
 		return false;
