@@ -17,7 +17,7 @@ public class TankClient extends Frame {
 	public static final int L = 800;
 	public static final int H = 600;
 	
-	private Tank myTank = new Tank(50, 50, true, this);
+	private Tank myTank = new Tank(50, 50, true, Tank.Direction.STOP, this);
 	//private Tank enemyTank = new Tank(100, 100, false, this);
 	
 	public List<Tank> tanks = new ArrayList<Tank>();
@@ -43,7 +43,7 @@ public class TankClient extends Frame {
 	public void lunchFrame() {
 		//add 10 enemy tank
 		for(int i=0; i<10; i++) {
-			tanks.add(new Tank(50 + 40*(i+1), 50, false, this));
+			tanks.add(new Tank(50 + 40*(i+1), 50, false, Tank.Direction.D, this));
 		}
 		
 		this.setLocation(200, 100);
@@ -74,6 +74,7 @@ public class TankClient extends Frame {
 		}
 		for(Missle m : missles) {
 			m.hitTanks(tanks);
+			m.hitTank(myTank);
 			m.draw(g);
 		}
 		//e.draw(g);

@@ -18,6 +18,7 @@ public class Missle {
 	private int x;
 	private int y;
 	private Tank.Direction dir;
+	private boolean good;
 	private boolean live = true;
 	private TankClient tc;
 
@@ -31,8 +32,9 @@ public class Missle {
 		this.dir = dir;
 	}
 	
-	public Missle(int x, int y, Direction dir, TankClient tc) {
+	public Missle(int x, int y, boolean good, Direction dir, TankClient tc) {
 		this(x,y,dir);
+		this.good = good;
 		this.tc = tc;
 	}
 	
@@ -54,6 +56,17 @@ public class Missle {
 		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 	
+	public boolean hitTank(Tank t) {
+		if(this.live && getRect().intersects(t.getRect()) && t.isLive() && this.good != t.isGood()) {
+			t.setLive(false);
+			Explode e = new Explode(x,y,tc);
+			tc.explodes.add(e);
+			live = false;
+			return true;
+		}
+		
+		return false;
+	}
 	
 	public boolean hitTanks(List<Tank> tanks) {
 		for(Tank t : tanks) {
@@ -67,19 +80,6 @@ public class Missle {
 	
 	///////////private//////////
 
-	private boolean hitTank(Tank t) {
-		if(getRect().intersects(t.getRect()) && t.isLive()) {
-			t.setLive(false);
-			Explode e = new Explode(x,y,tc);
-			tc.explodes.add(e);
-			live = false;
-			return true;
-		}
-		
-		return false;
-	}
-	
-	
 	private void move() {
 		switch(dir) {
 		case L:

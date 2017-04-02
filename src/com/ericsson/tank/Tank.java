@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class Tank {
 
@@ -18,10 +19,11 @@ public class Tank {
 	private int x;
 	private int y;
 	
+	private static Random r = new Random();
+	private int step = r.nextInt(12) + 3;
+	
 	private boolean good;
 	private boolean live = true;
-	
-	
 
 	private boolean bL = false;
 	private boolean bU = false;
@@ -37,14 +39,15 @@ public class Tank {
 	private Direction dir = Direction.STOP;
 	private Direction ptDir = Direction.D;
 	
-	public Tank(int x, int y, boolean good) {
+	public Tank(int x, int y, boolean good, Direction dir) {
 		this.x = x;
 		this.y = y;
 		this.good = good;
 	}
 	
-	public Tank(int x, int y, boolean good, TankClient tc) {
-		this(x, y, good);
+	public Tank(int x, int y, boolean good, Direction dir, TankClient tc) {
+		this(x, y, good, dir);
+		this.dir = dir;
 		this.tc = tc;
 	}
 	
@@ -54,6 +57,10 @@ public class Tank {
 	
 	public boolean isLive() {
 		return live;
+	}
+	
+	public boolean isGood() {
+		return good;
 	}
 	
 	public void draw(Graphics g) {
@@ -160,10 +167,12 @@ public class Tank {
 	}
 	
 	public Missle fire() {
+		if(!live) return null;
+		
 		int lx = x + Tank.WIDTH/2 - Missle.WIDTH/2;
 		int ly = y + Tank.HEIGHT/2 - Missle.HEIGHT/2;
 		//Missle m = new Missle(lx, ly, ptDir);
-		Missle m = new Missle(lx, ly, ptDir, tc);
+		Missle m = new Missle(lx, ly, good, ptDir, tc);
 		tc.addMissle(m);
 		System.out.println("tank fired");
 		return m;
@@ -217,6 +226,19 @@ public class Tank {
 		if(y<24) y = 24;
 		if(x + Tank.WIDTH + 2> TankClient.L) x = TankClient.L - Tank.WIDTH - 2;
 		if(y + Tank.HEIGHT + 2> TankClient.H) y = TankClient.H - Tank.HEIGHT - 2;
+	
+		if(!good) {
+			Direction[] dirs = Direction.values(); // convert to array
+			if(step == 0) {
+				step = r.nextInt(12) + 3;
+				int rn = r.nextInt(dirs.length); //random integer less then dirs.length
+				dir = dirs[rn];
+			}
+			
+			step--;
+			
+			if(r.nextInt(40) > 38) this.fire();
+		}
 	}
 
 }
